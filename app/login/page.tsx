@@ -1,4 +1,4 @@
-import AuthForm from './AuthForm'; // Import the new component
+import AuthForm from '../../components/AuthForm';
 
 const LoginPage = () => {
   return (
