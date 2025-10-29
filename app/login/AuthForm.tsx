@@ -1,3 +1,4 @@
+import '../../globals.css'; // Add this line
 'use client'; // This component must run in the browser
 
 import React, { useState } from 'react';
