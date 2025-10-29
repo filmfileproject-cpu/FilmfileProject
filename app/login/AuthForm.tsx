@@ -1,8 +1,8 @@
-import '../../globals.css'; // Add this line
-'use client'; // This component must run in the browser
+'use client'; // MUST be the first line
 
 import React, { useState } from 'react';
-import { supabase } from '@/lib/supabaseClient'; // Assuming we fix the import path
+// Correct relative path: from app/login/ to lib/supabaseClient.ts
+import { supabase } from '../../lib/supabaseClient'; 
 
 const AuthForm = () => {
   const [isSigningUp, setIsSigningUp] = useState(false);
@@ -23,6 +23,7 @@ const AuthForm = () => {
     }
 
     try {
+      // Use the correct sign-up or sign-in method
       const { error } = isSigningUp
         ? await supabase.auth.signUp({ email, password })
         : await supabase.auth.signInWithPassword({ email, password });
@@ -33,11 +34,9 @@ const AuthForm = () => {
         ? 'Success! Check your email for a confirmation link.' 
         : 'Logged in successfully! Redirecting...'
       );
-      
-      // In a real app, you would redirect the user here.
-      // For now, we'll just show the success message.
 
     } catch (error: any) {
+      // Use error.message for readability
       setMessage(error.message);
     } finally {
       setLoading(false);
@@ -47,7 +46,7 @@ const AuthForm = () => {
   return (
     <div className="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-sm">
       <h1 className="text-3xl font-bold mb-6 text-center text-white">
-        {isSigningUp ? 'Sign Up' : 'Log In'}
+        {isSigningUp ? 'Create Account' : 'Filmfile Login'}
       </h1>
       
       <form onSubmit={handleAuth} className="space-y-4">
@@ -57,6 +56,7 @@ const AuthForm = () => {
           className="w-full p-3 bg-gray-700 rounded-lg text-white placeholder-gray-400 border-none focus:ring-red-500 focus:border-red-500"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
         <input
           type="password"
@@ -64,6 +64,7 @@ const AuthForm = () => {
           className="w-full p-3 bg-gray-700 rounded-lg text-white placeholder-gray-400 border-none focus:ring-red-500 focus:border-red-500"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
         <button
           type="submit"
