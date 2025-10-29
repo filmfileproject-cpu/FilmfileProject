@@ -1,10 +1,11 @@
-'use client'; // MUST be the first line
+'use client'; 
 
 import React, { useState } from 'react';
-// Correct relative path: from app/login/ to lib/supabaseClient.ts
 import { supabase } from '@/lib/supabaseClient'; 
+import { useRouter } from 'next/navigation'; // <-- NEW IMPORT
 
 const AuthForm = () => {
+  const router = useRouter(); // <-- INITIALIZE ROUTER
   const [isSigningUp, setIsSigningUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,26 +24,27 @@ const AuthForm = () => {
     }
 
     try {
-      // Use the correct sign-up or sign-in method
       const { error } = isSigningUp
         ? await supabase.auth.signUp({ email, password })
         : await supabase.auth.signInWithPassword({ email, password });
 
       if (error) throw error;
 
-      setMessage(isSigningUp 
-        ? 'Success! Check your email for a confirmation link.' 
-        : 'Logged in successfully! Redirecting...'
-      );
+      if (!isSigningUp) {
+        // SUCCESS: FORCING REDIRECT TO PROFILE PAGE
+        router.push('/profile'); 
+      } else {
+        setMessage('Success! Check your email for a confirmation link.'); 
+      }
 
     } catch (error: any) {
-      // Use error.message for readability
       setMessage(error.message);
     } finally {
       setLoading(false);
     }
   };
-
+  
+  // The rest of the return statement (the form UI) remains the same
   return (
     <div className="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-sm">
       <h1 className="text-3xl font-bold mb-6 text-center text-white">
