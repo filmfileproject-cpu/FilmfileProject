@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 // Correct relative path: from app/login/ to lib/supabaseClient.ts
-import { supabase } from '../../lib/supabaseClient'; 
+import { supabase } from '@/lib/supabaseClient'; 
 
 const AuthForm = () => {
   const [isSigningUp, setIsSigningUp] = useState(false);
